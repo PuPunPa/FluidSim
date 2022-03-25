@@ -6,7 +6,7 @@ https://github.com/Guilouf/python_realtime_fluidsim
 """
 import numpy as np
 import math
-
+# JP wuz here
 
 class Fluid:
 
