@@ -160,19 +160,55 @@ class Fluid:
             self.roty = self.rotx
         return self.rotx, self.roty
 
+def inputReader(path):
+    f = open(path)
+    input = json.load(f)
+    f.close
+    print(input)
+    colorScheme = input["color_scheme"]
+    densities = input["density"]
+    velocities = input["velocity"]
+    solids = input["solid"]
+    return colorScheme, densities, velocities, solids
 
 if __name__ == "__main__":
     try:
+        import json
         import matplotlib.pyplot as plt
         from matplotlib import animation
 
+        colorScheme, densities, velocities, solids = inputReader("input.json")
+
         inst = Fluid()
 
-        def update_im(i):
+        def update_im(frame):
+            frame += 1
             # We add new density creators in here
-            inst.density[14:17, 14:17] += 100  # add density into a 3*3 square
+            for d in densities:
+                inst.density[d["xi"]:d["xj"], d["yi"]:d["yj"]] += d["value"]
+            #inst.density[14:17, 14:17] += 100  # add density into a 3*3 square
+            #inst.density[8:13, 8:13] = 0  # add density into a 3*3 square
+            #inst.velo[9:13, 9:13] = [0, 0]
             # We add velocity vector values in here
-            inst.velo[20, 20] = [-2, -2]
+            #inst.velo[20, 20] = [-2, -2]
+            for v in velocities:
+                if v["xi"] == v["xj"]:
+                    v["xj"] += 1
+                if v["yi"] == v["yj"]:
+                    v["yj"] += 1
+                if v["rotation"]:
+                    inst.velo[v["xi"]:v["xj"], v["yi"]:v["yj"]] = [np.cos(v["rotation"] * frame + v["vx"]), np.sin(v["rotation"] * frame + v["vy"])]
+                else:
+                    inst.velo[v["xi"]:v["xj"], v["yi"]:v["yj"]] = [v["vx"], v["vy"]]
+
+            for s in solids:
+                if s["xi"] == s["xj"]:
+                    s["xj"] += 1
+                if s["yi"] == s["yj"]:
+                    s["yj"] += 1
+                inst.velo[s["xi"]:s["xj"], s["yi"]:s["yj"]] = [0, 0]
+                inst.density[s["xi"]:s["xj"], s["yi"]:s["yj"]] = 0
+
             inst.step()
             im.set_array(inst.density)
             q.set_UVC(inst.velo[:, :, 1], inst.velo[:, :, 0])
@@ -182,7 +218,7 @@ if __name__ == "__main__":
         fig = plt.figure()
 
         # plot density
-        im = plt.imshow(inst.density, vmax=100, interpolation='bilinear')
+        im = plt.imshow(inst.density, vmax=100, interpolation='bilinear', cmap=colorScheme)
 
         # plot vector field
         q = plt.quiver(inst.velo[:, :, 1], inst.velo[:, :, 0], scale=10, angles='xy')
