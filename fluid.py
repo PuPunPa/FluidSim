@@ -177,7 +177,7 @@ if __name__ == "__main__":
         import matplotlib.pyplot as plt
         from matplotlib import animation
 
-        colorScheme, densities, velocities, solids = inputReader("input.json")
+        colorScheme, densities, velocities, solids = inputReader("input4.json")
 
         inst = Fluid()
 
@@ -185,6 +185,10 @@ if __name__ == "__main__":
             frame += 1
             # We add new density creators in here
             for d in densities:
+                if d["xi"] == d["xj"]:
+                    d["xj"] += 1
+                if d["yi"] == d["yj"]:
+                    d["yj"] += 1
                 inst.density[d["xi"]:d["xj"], d["yi"]:d["yj"]] += d["value"]
             #inst.density[14:17, 14:17] += 100  # add density into a 3*3 square
             #inst.density[8:13, 8:13] = 0  # add density into a 3*3 square

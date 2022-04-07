@@ -1,0 +1,52 @@
+{
+    "color_scheme": "plasma",
+    "density":[
+        {
+            "xi": 2,
+            "xj": 4,
+            "yi": 2,
+            "yj": 4,
+            "value": 100
+        }
+    ],
+    "velocity":[
+        {
+            "xi": 3,
+            "xj": 3,
+            "yi": 1,
+            "yj": 1,
+            "vx": 0,
+            "vy": 1,
+            "rotation": 0
+        },
+        {
+            "xi": 57,
+            "xj": 57,
+            "yi": 57,
+            "yj": 57,
+            "vx": 0,
+            "vy": -1,
+            "rotation": 0
+        },
+        {
+            "xi": 3,
+            "xj": 3,
+            "yi": 57,
+            "yj": 57,
+            "vx": 1,
+            "vy": 0,
+            "rotation": 0
+        },
+        {
+            "xi": 57,
+            "xj": 57,
+            "yi": 3,
+            "yj": 3,
+            "vx": -1,
+            "vy": 0,
+            "rotation": 0
+        }
+    ],
+    "solid":[
+    ]
+}
